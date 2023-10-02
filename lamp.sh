@@ -30,7 +30,7 @@ include(){
 }
 
 version(){
-    _info "Version: $(_green 20230215)"
+    _info "Version: $(_green 20230615)"
 }
 
 show_parameters(){
@@ -152,11 +152,11 @@ process(){
                   "${mysql}" == "${mariadb10_4_filename}" || \
                   "${mysql}" == "${mariadb10_5_filename}" || \
                   "${mysql}" == "${mariadb10_6_filename}" || \
-                  "${mysql}" == "${mariadb10_7_filename}" ]] \
+                  "${mysql}" == "${mariadb10_11_filename}" ]] \
                   && version_lt $(get_libc_version) 2.14; then
                 _error "Option --db_option input error, ${mysql} is not be supported in your OS, please input a correct number"
             fi
-            if ! is_64bit && [[ "${mysql}" == "${mariadb10_6_filename}" || "${mysql}" == "${mariadb10_7_filename}" ]]; then
+            if ! is_64bit && [[ "${mysql}" == "${mariadb10_6_filename}" || "${mysql}" == "${mariadb10_11_filename}" ]]; then
                 _error "Option --db_option input error, ${mysql} is not be supported in your OS, please input a correct number"
             fi
             ;;
@@ -209,13 +209,13 @@ set_parameters(){
     [ -z "${php_modules_install}" ] && php_modules_install="do_not_install"
     [ "${php}" == "do_not_install" ] && php_modules_install="do_not_install"
     if [ -n "${php_modules_install}" ]; then
-        if [[ "${php}" =~ ^php-8.[0-1].+$ ]]; then
+        if [[ "${php}" =~ ^php-8.[0-2].+$ ]]; then
             if_in_array "${php_memcached_filename}" "${php_modules_install}" && _error "${php_memcached_filename} is not support ${php} now, please remove php extension: memcached"
         fi
-        if [[ "${php}" =~ ^php-8.0.+$ ]]; then
+        if [[ "${php}" =~ ^php-8.[0|2].+$ ]]; then
             if_in_array "${ionCube_filename}" "${php_modules_install}" && _error "${ionCube_filename} is not support ${php} now, please remove php extension: ioncube"
         fi
-        if [[ "${php}" =~ ^php-8.1.+$ ]]; then
+        if [[ "${php}" =~ ^php-8.[1-2].+$ ]]; then
             if_in_array "${phalcon_filename}" "${php_modules_install}" && _error "${phalcon_filename} is not support ${php} now, please remove php extension: phalcon"
             if_in_array "${php_libsodium_filename}" "${php_modules_install}" && _error "${php_libsodium_filename} is not support ${php} now, please remove php extension: libsodium"
         fi
